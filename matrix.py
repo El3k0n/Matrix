@@ -82,12 +82,6 @@ class Matrix(object):
 
         return newMatrix
 
-    def __random__(self, lower=0, upper=30):
-        #Fills the matrix with random numbers (integers)
-        for row in self.matrix:
-            for i in range(self.columns):
-                row[i] = randint(lower, upper)
-
     def __add_or_sub__(self, otherMatrix, operation):
         if (self.rows == otherMatrix.rows) and (self.columns == otherMatrix.columns):
 
@@ -127,3 +121,9 @@ class Matrix(object):
             pass
         else:
             raise Exception("Can only calculate the determinant of a square matrix")
+
+    def random(self, lower=0, upper=30):
+        #Fills the matrix with random numbers (integers)
+        for row in self.matrix:
+            for i in range(self.columns):
+                row[i] = randint(lower, upper)
