@@ -5,6 +5,7 @@
 #TODO: Calcolo del determinante in modo ricorsivo con teorema di Laplace
 
 from random import randint
+from copy import deepcopy
 
 class Matrix(object):
 
@@ -30,6 +31,10 @@ class Matrix(object):
 
     def __getitem__(self, key):
         return self.matrix[key]
+
+    def __delitem__(self, key):
+        del(self.matrix[key])
+        return
 
     def __contains__(self, value):
         for row in self.matrix:
@@ -97,7 +102,6 @@ class Matrix(object):
 
             return newMatrix
         else:
-            #TODO: Migliora formattazione del codice
             raise Exception(
                 "Can't add or subtract (%d, %d) matrix with (%d, %d) matrix" %
                 (self.rows, self.columns, otherMatrix.rows, otherMatrix.columns)
@@ -116,9 +120,37 @@ class Matrix(object):
 
         return newMatrix
 
+    def complement_matrix(self, rowToDelete, columnToDelete):
+        newMatrix = deepcopy(self)
+        del(newMatrix[rowToDelete])
+        newMatrix.rows -= 1
+
+        for row in range(newMatrix.rows):
+            del(newMatrix[row][columnToDelete])
+
+        newMatrix.columns -= 1
+
+        return newMatrix
+
+    def algebric_complement(self, row, column):
+        complementMatrix = self.complement_matrix(row, column)
+        algebricComplement = (-1)**(row+column+2) * complementMatrix.determinant()
+
+        return algebricComplement
+
     def determinant(self):
         if self.is_square():
-            pass
+            if self.rows == 1:
+                #If it's a square matrix with only 1 row, it has only 1 element
+                det = self[0][0] #The determinant is equal to the element
+            elif self.rows == 2:
+                det = (self[0][0] * self[1][1]) - (self[0][1] * self[1][0])
+            else:
+                #We calculate the determinant using Laplace's theorem
+                det = 0
+                for element in range(self.columns):
+                    det += self[0][element] * self.algebric_complement(0, element)
+            return det
         else:
             raise Exception("Can only calculate the determinant of a square matrix")
 
