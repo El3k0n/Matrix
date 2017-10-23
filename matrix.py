@@ -53,15 +53,18 @@ class Matrix(object):
 
     def __eq__(self, otherMatrix):
         #Equality
-        if (self.rows != otherMatrix.rows) or (self.columns != otherMatrix.columns):
-            return False #They don't have the same dimensions, they can't be equal
+        if isinstance(otherMatrix, Matrix):
+            if (self.rows != otherMatrix.rows) or (self.columns != otherMatrix.columns):
+                return False #They don't have the same dimensions, they can't be equal
 
-        for row in range(self.rows): #Check the elements one by one
-            for column in range(self.columns):
-                if self.matrix[row][column] != otherMatrix[row][column]:
-                    return False
+            for row in range(self.rows): #Check the elements one by one
+                for column in range(self.columns):
+                    if self.matrix[row][column] != otherMatrix[row][column]:
+                        return False
 
-        return True
+            return True
+        else:
+            return False
 
     def __ne__(self, otherMatrix):
         #Inequality
