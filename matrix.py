@@ -73,21 +73,21 @@ class Matrix(object):
 
     def __add__(self, otherMatrix):
         #Adds 2 matrices of the same type
-        return self.__add_or_sub__(otherMatrix, "add")
+        return self.__add_or_sub(otherMatrix, "add")
 
     def __sub__(self, otherMatrix):
         #Subtracts otherMatrix from self
-        return self.__add_or_sub__(otherMatrix, "sub")
+        return self.__add_or_sub(otherMatrix, "sub")
 
     def __mul__(self, secondTerm):
         if isinstance(secondTerm, (int, float, complex)):
-            return self.__scalar_product__(secondTerm)
+            return self.__scalar_product(secondTerm)
         elif isinstance(secondTerm, Matrix):
             raise Exception("Matrix multiplication is not defined")
         else:
             raise TypeError("Can't multiply a matrix by non-int of type " + type(secondTerm).__name__)
 
-    def __scalar_product__(self, number):
+    def __scalar_product(self, number):
         newMatrix = Matrix(self.rows, self.columns)
 
         for row in range(self.rows):
@@ -96,7 +96,7 @@ class Matrix(object):
 
         return newMatrix
 
-    def __add_or_sub__(self, other, operation):
+    def __add_or_sub(self, other, operation):
         newMatrix = Matrix(self.rows, self.columns)
 
         if isinstance(other, (int, float, complex)):
