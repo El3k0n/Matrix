@@ -2,7 +2,6 @@
 #TODO: Definisci moltiplicazione tra matrici (ed eccezioni se non si può fare)
 #TODO: Aggiungi check del tipo a ogni operatore
 #TODO: Aggiungi addizione tra matrice e numero
-#TODO: Calcolo del determinante in modo ricorsivo con teorema di Laplace
 
 from random import randint
 from copy import deepcopy
@@ -31,6 +30,13 @@ class Matrix(object):
 
     def __getitem__(self, key):
         return self.matrix[key]
+
+    def __setitem__(self, key, value):
+        if isinstance(value, list):
+            self.matrix[key] = value
+        else:
+            raise TypeError("A matrix object can only contain lists of numbers")
+        return
 
     def __delitem__(self, key):
         del(self.matrix[key])
