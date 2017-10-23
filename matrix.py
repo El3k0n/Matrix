@@ -93,26 +93,36 @@ class Matrix(object):
 
         return newMatrix
 
-    def __add_or_sub__(self, otherMatrix, operation):
-        if (self.rows == otherMatrix.rows) and (self.columns == otherMatrix.columns):
+    def __add_or_sub__(self, other, operation):
+        newMatrix = Matrix(self.rows, self.columns)
 
-            newMatrix = Matrix(self.rows, self.columns)
+        if isinstance(other, (int, float, complex)):
             for row in range(self.rows):
                 for column in range(self.columns):
                     if operation == "add":
-                        newMatrix[row][column] = self[row][column] + otherMatrix[row][column]
-                    elif operation == "sub":
-                        newMatrix[row][column] = self[row][column] - otherMatrix[row][column]
-                    else:
-                        raise Exception("Invalid operation type")
-
-            return newMatrix
+                        newMatrix[row][column] = self[row][column] + other
+                    if operation == "sub":
+                        newMatrix[row][column] = self[row][column] - other
+        elif isinstance(other, Matrix):
+            if (self.rows == other.rows) and (self.columns == other.columns):
+                for row in range(self.rows):
+                    for column in range(self.columns):
+                        if operation == "add":
+                            newMatrix[row][column] = self[row][column] + other[row][column]
+                        elif operation == "sub":
+                            newMatrix[row][column] = self[row][column] - other[row][column]
+                        else:
+                            raise Exception("Invalid operation type")
+            else:
+                raise Exception(
+                    "Can't add or subtract (%d, %d) matrix with (%d, %d) matrix" %
+                    (self.rows, self.columns, other.rows, other.columns)
+                )
+                #We only support operations between matrices of the same type
         else:
-            raise Exception(
-                "Can't add or subtract (%d, %d) matrix with (%d, %d) matrix" %
-                (self.rows, self.columns, otherMatrix.rows, otherMatrix.columns)
-            )
-            #We only support operations between matrices of the same type
+            raise TypeError("Can only add or subtract a matrix with another matrix or a number")
+
+        return newMatrix
 
     def is_square(self):
         return self.rows == self.columns
