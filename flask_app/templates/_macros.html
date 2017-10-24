@@ -1,0 +1,11 @@
+{% macro input_matrix(rows, columns) -%}
+    <div class="table">
+        {% for row in range(rows) %}
+          <form class="tr" method="post" action="blah.html">
+            {% for column in range(columns) %}
+              <span class="td"><input type="number"/></span>
+            {% endfor %}
+          </form>
+        {% endfor %}
+    </div>
+{%- endmacro %}

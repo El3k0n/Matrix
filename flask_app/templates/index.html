@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% from "_macros.html" import input_matrix %}
+
+{% block style %}
+<style>
+    DIV.table {
+        display:table;
+    }
+    FORM.tr, DIV.tr {
+        display:table-row;
+    }
+    SPAN.td {
+        display:table-cell;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    {{ input_matrix(rows, columns) }}
+{% endblock %}
