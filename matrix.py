@@ -153,7 +153,7 @@ class Matrix(object):
 
     def algebric_complement(self, row, column):
         complementMatrix = self.complement_matrix(row, column)
-        algebricComplement = (-1)**(row+column+2) * complementMatrix.determinant()
+        algebricComplement = (-1)**(row+column) * complementMatrix.determinant()
 
         return algebricComplement
 
