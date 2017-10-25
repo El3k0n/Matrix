@@ -1,7 +1,6 @@
 #TODO: Implementa eccezioni
 #TODO: Definisci moltiplicazione tra matrici (ed eccezioni se non si può fare)
 #TODO: Aggiungi check del tipo a ogni operatore
-#TODO: Implementa funzioni per commutatività (rmul, radd ecc.)
 
 from random import randint
 from copy import deepcopy
@@ -86,6 +85,9 @@ class Matrix(object):
             raise Exception("Matrix multiplication is not defined")
         else:
             raise TypeError("Can't multiply a matrix by non-int of type " + type(secondTerm).__name__)
+
+    def __rmul__(self, secondTerm):
+        return self.__mul__(secondTerm)
 
     def __scalar_product(self, number):
         newMatrix = Matrix(self.rows, self.columns)
