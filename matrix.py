@@ -1,6 +1,6 @@
-#TODO: Implementa eccezioni
-#TODO: Definisci moltiplicazione tra matrici (ed eccezioni se non si può fare)
-#TODO: Aggiungi check del tipo a ogni operatore
+#TODO: Make custom exceptions
+#TODO: Define multiplication between matrices
+#TODO: You shouln'd be able to delete a single element from a row, only full rows and columns
 
 from random import randint
 from copy import deepcopy
@@ -39,6 +39,7 @@ class Matrix(object):
 
     def __delitem__(self, key):
         del(self.matrix[key])
+        self.rows = self.rows - 1
         return
 
     def __contains__(self, value):
