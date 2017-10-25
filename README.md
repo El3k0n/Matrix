@@ -82,7 +82,7 @@ You can also specify the range of the random values:
 True
 >>> s.determinant()  #Calculating the determinant
 -7
->>> s.transpose()
+>>> s.transpose()  #Calculating the transpose matrix
 [4, 1, 3]
 [1, 2, 2]
 [1, 2, 1]
