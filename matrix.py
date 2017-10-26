@@ -145,7 +145,6 @@ class Matrix(object):
     def complement_matrix(self, rowToDelete, columnToDelete):
         newMatrix = deepcopy(self)
         del(newMatrix[rowToDelete])
-        newMatrix.rows -= 1
 
         for row in range(newMatrix.rows):
             del(newMatrix[row][columnToDelete])
