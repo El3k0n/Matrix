@@ -1,6 +1,6 @@
 #TODO: Make custom exceptions
 #TODO: Define multiplication between matrices
-#TODO: You shouln'd be able to delete a single element from a row, only full rows and columns
+#TODO: You shouldn't be able to delete a single element from a row, only full rows and columns
 
 from random import randint
 from copy import deepcopy
@@ -83,7 +83,31 @@ class Matrix(object):
         if isinstance(secondTerm, (int, float, complex)):
             return self.__scalar_product(secondTerm)
         elif isinstance(secondTerm, Matrix):
-            raise Exception("Matrix multiplication is not defined")
+            if self.columns == secondTerm.rows:
+                newMatrix = Matrix(self.rows, secondTerm.columns)
+                transposeMatrix = secondTerm.transpose()
+                #Matrix multiplication is done iterating through each column of the
+                #second term. We use the transpose matrix because it creates a list
+                #for each column of secondTerm.
+
+                for row_self in range(self.rows):
+                    for row_transpose in range(transposeMatrix.rows):
+                        #The rows of the transpose correspond to the columns
+                        #Of the original matrix.
+                        new_element = 0
+                        for column_self in range(self.columns):
+                            new_element += (self[row_self][column_self] * transposeMatrix[row_transpose][column_self])
+
+                        newMatrix[row_self][row_transpose] = new_element
+
+                return newMatrix
+
+            else:
+                raise Exception(
+                    "Can't multiply (%d, %d) matrix with (%d, %d) matrix" %
+                    (self.rows, self.columns, secondTerm.rows, secondTerm.columns)
+                )
+            #raise Exception("Matrix multiplication is not defined")
         else:
             raise TypeError("Can't multiply a matrix by non-int of type " + type(secondTerm).__name__)
 
@@ -99,30 +123,30 @@ class Matrix(object):
 
         return newMatrix
 
-    def __add_or_sub(self, other, operation):
+    def __add_or_sub(self, secondTerm, operation):
         newMatrix = Matrix(self.rows, self.columns)
 
-        if isinstance(other, (int, float, complex)):
+        if isinstance(secondTerm, (int, float, complex)):
             for row in range(self.rows):
                 for column in range(self.columns):
                     if operation == "add":
-                        newMatrix[row][column] = self[row][column] + other
+                        newMatrix[row][column] = self[row][column] + secondTerm
                     if operation == "sub":
-                        newMatrix[row][column] = self[row][column] - other
-        elif isinstance(other, Matrix):
-            if (self.rows == other.rows) and (self.columns == other.columns):
+                        newMatrix[row][column] = self[row][column] - secondTerm
+        elif isinstance(secondTerm, Matrix):
+            if (self.rows == secondTerm.rows) and (self.columns == secondTerm.columns):
                 for row in range(self.rows):
                     for column in range(self.columns):
                         if operation == "add":
-                            newMatrix[row][column] = self[row][column] + other[row][column]
+                            newMatrix[row][column] = self[row][column] + secondTerm[row][column]
                         elif operation == "sub":
-                            newMatrix[row][column] = self[row][column] - other[row][column]
+                            newMatrix[row][column] = self[row][column] - secondTerm[row][column]
                         else:
                             raise Exception("Invalid operation type")
             else:
                 raise Exception(
                     "Can't add or subtract (%d, %d) matrix with (%d, %d) matrix" %
-                    (self.rows, self.columns, other.rows, other.columns)
+                    (self.rows, self.columns, secondTerm.rows, secondTerm.columns)
                 )
                 #We only support operations between matrices of the same type
         else:
