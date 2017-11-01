@@ -1,5 +1,4 @@
 #TODO: Make custom exceptions
-#TODO: Define multiplication between matrices
 #TODO: You shouldn't be able to delete a single element from a row, only full rows and columns
 
 from random import randint
@@ -199,7 +198,18 @@ class Matrix(object):
         else:
             raise Exception("Can only calculate the determinant of a square matrix")
 
-    def random(self, lower=0, upper=30):
+    def algebric_complements_matrix(self):
+        #Returns the matrix of all algebric complements
+        if self.is_square():
+            newMatrix = Matrix(self.rows, self.columns)
+            for row in range(self.rows):
+                for column in range(self.columns):
+                    newMatrix[row][column] = self.algebric_complement(row, column)
+            return newMatrix
+        else:
+            raise Exception("Algebric complements can only be calculated on a square matrix")
+
+    def random(self, lower=-5, upper=5):
         #Fills the matrix with random numbers (integers)
         for row in self.matrix:
             for i in range(self.columns):
