@@ -14,6 +14,9 @@ Matrix supports various operations with matrices, like addition and multiplicati
 * Sum between matrices
 * Subtraction between matrices
 * Multiplication of a matrix by a number
+* Multiplication between matrices
+* Inverse matrix
+* Matrix of algebric complements
 * Check if a matrix contains an certain number
 * Equality and inequality test between matrices
 * Transpose matrix
@@ -78,7 +81,7 @@ You can also specify the range of the random values:
 [4, 1, 1]
 [1, 2, 2]
 [3, 2, 1]
->>>s.is_square()
+>>> s.is_square()
 True
 >>> s.determinant()  #Calculating the determinant
 -7
@@ -86,6 +89,20 @@ True
 [4, 1, 3]
 [1, 2, 2]
 [1, 2, 1]
+>>> f = Matrix(3,3)
+>>> f.random(-10, 10)
+>>> f
+[-1, 2, 1]
+[5, -8, -6]
+[-3, 5, 4]
+>>> f.inverse_matrix()  #Calculate the inverse matrix
+[2.0, 3.0, 4.0]
+[2.0, 1.0, 1.0]
+[-1.0, 1.0, 2.0]
+>>> f * s  #Product between matrices
+[1, 5, 4]
+[-6, -23, -17]
+[5, 15, 11]
 >>>
 ```
 

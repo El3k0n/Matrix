@@ -209,6 +209,16 @@ class Matrix(object):
         else:
             raise Exception("Algebric complements can only be calculated on a square matrix")
 
+    def inverse_matrix(self):
+        det = self.determinant()
+        if det == 0:
+            raise Exception("Matrix not invertible")
+        else:
+            algebricComplementsMatrix = self.algebric_complements_matrix()
+            inverseMatrix = 1/det * algebricComplementsMatrix.transpose()
+
+            return inverseMatrix
+
     def random(self, lower=-5, upper=5):
         #Fills the matrix with random numbers (integers)
         for row in self.matrix:
