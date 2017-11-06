@@ -16,6 +16,7 @@ Matrix supports various operations with matrices, like addition and multiplicati
 * Multiplication of a matrix by a number
 * Multiplication between matrices
 * Inverse matrix
+* Symmetric and antisymmetric part
 * Matrix of algebric complements
 * Check if a matrix contains an certain number
 * Equality and inequality test between matrices
@@ -60,13 +61,13 @@ You can also specify the range of the random values:
 ##### Basic matrix operations #####
 
 ```Python
->>> m * 3  #Multiplication
+>>> m * 3  # Multiplication
 [15, 9, 12]
 [3, 3, 15]
->>> m + 3  #Addition
+>>> m + 3  # Addition
 [8, 6, 7]
 [4, 4, 8]
->>> m - 5  #Subtraction
+>>> m - 5  # Subtraction
 [0, -2, -1]
 [-4, -4, 0]
 >>>
@@ -75,7 +76,7 @@ You can also specify the range of the random values:
 ##### Advanced matrix operations #####
 
 ```Python
->>> s = Matrix(3,3)  #We create a new square matrix
+>>> s = Matrix(3,3)  # We create a new square matrix
 >>> s.random(1,5)
 >>> s
 [4, 1, 1]
@@ -83,9 +84,9 @@ You can also specify the range of the random values:
 [3, 2, 1]
 >>> s.is_square()
 True
->>> s.determinant()  #Calculating the determinant
+>>> s.determinant()  # Calculating the determinant
 -7
->>> s.transpose()  #Calculating the transpose matrix
+>>> s.transpose()  # Calculating the transpose matrix
 [4, 1, 3]
 [1, 2, 2]
 [1, 2, 1]
@@ -95,11 +96,19 @@ True
 [-1, 2, 1]
 [5, -8, -6]
 [-3, 5, 4]
->>> f.inverse_matrix()  #Calculate the inverse matrix
+>>> f.inverse_matrix()  # Calculate the inverse matrix
 [2.0, 3.0, 4.0]
 [2.0, 1.0, 1.0]
 [-1.0, 1.0, 2.0]
->>> f * s  #Product between matrices
+>>> f.symmetric_part()  # Get the symmetric part
+[-1.0, 3.5, -1.0]
+[3.5, -8.0, -0.5]
+[-1.0, -0.5, 4.0]
+>>> f.antisymmetric_part()
+[0.0, -1.5, 2.0]
+[1.5, 0.0, -5.5]
+[-2.0, 5.5, 0.0]
+>>> f * s  # Product between matrices
 [1, 5, 4]
 [-6, -23, -17]
 [5, 15, 11]
@@ -109,22 +118,22 @@ True
 ##### Accessing and modifying the elements of a matrix #####
 
 ```Python
->>> s[0]  #Get the first row
+>>> s[0]  # Get the first row
 [4, 1, 1]
->>> s[0][2]  #Get the third element of the first row
+>>> s[0][2]  # Get the third element of the first row
 1
->>> s[0][2] = 15  #Set the element (1, 3) as 15
+>>> s[0][2] = 15  # Set the element (1, 3) as 15
 >>> s
 [4, 1, 15]
 [1, 2, 2]
 [3, 2, 1]
->>> 15 in s  #Check if the matrix contains a number
+>>> 15 in s  # Check if the matrix contains a number
 True
->>> del(s[1])  #Delete the second row
+>>> del(s[1])  # Delete the second row
 >>> s
 [4, 1, 15]
 [3, 2, 1]
->>> s.rows  #The dimensions are automatically updated
+>>> s.rows  # The dimensions are automatically updated
 2
 >>>
 ```

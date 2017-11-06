@@ -12,14 +12,14 @@ class Matrix(object):
         self.matrix = []
 
         for i in range(rows):
-            self.matrix.append([]) #Initialize empty rows
+            self.matrix.append([]) # Initialize empty rows
 
         for row in self.matrix:
             for i in range(columns):
-                row.append(0) #Fill the rows with 0s
+                row.append(0) # Fill the rows with 0s
 
     def __repr__(self):
-        #Just print the matrix row after row
+        '''Print the matrix row after row.'''
         rep = ""
         for row in self.matrix:
             rep += str(row)
@@ -51,12 +51,11 @@ class Matrix(object):
         return False
 
     def __eq__(self, otherMatrix):
-        #Equality
         if isinstance(otherMatrix, Matrix):
             if (self.rows != otherMatrix.rows) or (self.columns != otherMatrix.columns):
-                return False #They don't have the same dimensions, they can't be equal
+                return False # They don't have the same dimensions, they can't be equal
 
-            for row in range(self.rows): #Check the elements one by one
+            for row in range(self.rows): # Check the elements one by one
                 for column in range(self.columns):
                     if self.matrix[row][column] != otherMatrix[row][column]:
                         return False
@@ -66,16 +65,14 @@ class Matrix(object):
             return False
 
     def __ne__(self, otherMatrix):
-        #Inequality
-        #Check's for equality, then reverses the result
-        return not self.__eq__(otherMatrix)
+        return not self.__eq__(otherMatrix) # Check for equality and reverse the result
 
     def __add__(self, otherMatrix):
-        #Adds 2 matrices of the same type
+        '''Add 2 matrices of the same type.'''
         return self.__add_or_sub(otherMatrix, "add")
 
     def __sub__(self, otherMatrix):
-        #Subtracts otherMatrix from self
+        '''Subtracts otherMatrix from self.'''
         return self.__add_or_sub(otherMatrix, "sub")
 
     def __mul__(self, secondTerm):
@@ -85,14 +82,19 @@ class Matrix(object):
             if self.columns == secondTerm.rows:
                 newMatrix = Matrix(self.rows, secondTerm.columns)
                 transposeMatrix = secondTerm.transpose()
-                #Matrix multiplication is done iterating through each column of the
-                #second term. We use the transpose matrix because it creates a list
-                #for each column of secondTerm.
+                '''
+                Matrix multiplication is done iterating through each column of the
+                second term. We calculate the transpose of the second matrix because
+                it gives us a list for each column, which is far easier to iterate
+                through.
+                '''
 
                 for row_self in range(self.rows):
                     for row_transpose in range(transposeMatrix.rows):
-                        #The rows of the transpose correspond to the columns
-                        #Of the original matrix.
+                        '''
+                        The rows of the transpose correspond to the columns
+                        of the original matrix.
+                        '''
                         new_element = 0
                         for column_self in range(self.columns):
                             new_element += (self[row_self][column_self] * transposeMatrix[row_transpose][column_self])
@@ -106,7 +108,6 @@ class Matrix(object):
                     "Can't multiply (%d, %d) matrix with (%d, %d) matrix" %
                     (self.rows, self.columns, secondTerm.rows, secondTerm.columns)
                 )
-            #raise Exception("Matrix multiplication is not defined")
         else:
             raise TypeError("Can't multiply a matrix by non-int of type " + type(secondTerm).__name__)
 
@@ -143,11 +144,10 @@ class Matrix(object):
                         else:
                             raise Exception("Invalid operation type")
             else:
-                raise Exception(
+                raise TypeError(
                     "Can't add or subtract (%d, %d) matrix with (%d, %d) matrix" %
                     (self.rows, self.columns, secondTerm.rows, secondTerm.columns)
                 )
-                #We only support operations between matrices of the same type
         else:
             raise TypeError("Can only add or subtract a matrix with another matrix or a number")
 
@@ -161,7 +161,7 @@ class Matrix(object):
 
         for row in range(self.rows):
             for column in range(self.columns):
-                newMatrix[column][row] = self.matrix[row][column] #a(i,j) = a(j,i)
+                newMatrix[column][row] = self.matrix[row][column] # a(i,j) = a(j,i)
 
         return newMatrix
 
@@ -183,23 +183,30 @@ class Matrix(object):
         return algebricComplement
 
     def determinant(self):
+        '''
+        Return the determinant.
+
+        This function uses Laplace's theorem to calculate the determinant.
+        It is a very rough implementation, which means it becomes slower and
+        slower as the size of the matrix grows.
+        '''
         if self.is_square():
             if self.rows == 1:
-                #If it's a square matrix with only 1 row, it has only 1 element
-                det = self[0][0] #The determinant is equal to the element
+                # If it's a square matrix with only 1 row, it has only 1 element
+                det = self[0][0] # The determinant is equal to the element
             elif self.rows == 2:
                 det = (self[0][0] * self[1][1]) - (self[0][1] * self[1][0])
             else:
-                #We calculate the determinant using Laplace's theorem
+                # We calculate the determinant using Laplace's theorem
                 det = 0
                 for element in range(self.columns):
                     det += self[0][element] * self.algebric_complement(0, element)
             return det
         else:
-            raise Exception("Can only calculate the determinant of a square matrix")
+            raise TypeError("Can only calculate the determinant of a square matrix")
 
     def algebric_complements_matrix(self):
-        #Returns the matrix of all algebric complements
+        '''Return the matrix of all algebric complements.'''
         if self.is_square():
             newMatrix = Matrix(self.rows, self.columns)
             for row in range(self.rows):
@@ -207,9 +214,10 @@ class Matrix(object):
                     newMatrix[row][column] = self.algebric_complement(row, column)
             return newMatrix
         else:
-            raise Exception("Algebric complements can only be calculated on a square matrix")
+            raise TypeError("Algebric complements can only be calculated on a square matrix")
 
     def inverse_matrix(self):
+        '''Return the inverse matrix.'''
         det = self.determinant()
         if det == 0:
             raise Exception("Matrix not invertible")
@@ -219,8 +227,20 @@ class Matrix(object):
 
             return inverseMatrix
 
+    def symmetric_part(self):
+        '''Return the symmetric part of the matrix.'''
+        newMatrix = 1/2 * (self + self.transpose())
+
+        return newMatrix
+
+    def antisymmetric_part(self):
+        '''Return the antisymmetric part of the matrix.'''
+        newMatrix = 1/2 * (self - self.transpose())
+
+        return newMatrix
+
     def random(self, lower=-5, upper=5):
-        #Fills the matrix with random numbers (integers)
+        '''Fill the matrix with random numbers (integers).'''
         for row in self.matrix:
             for i in range(self.columns):
                 row[i] = randint(lower, upper)
